@@ -69,7 +69,7 @@ async def about(ctx):
             description = f'Eu sou um bot criado para auxiliar as partidas de RPG de mesa do sistema Mitos e Lendas',
             color = discord.Color.purple()
         )
-    sobre.add_field(name='Comandos Disponíveis', value = "`!hello`, `!calc`, `!erigod`, `!about`, `!ping`", inline= False)
+    sobre.add_field(name='Comandos Disponíveis', value = "`!hello`, `!calc`, `!erigod`, `!about`, `!ping`, `!classe`", inline= False)
     sobre.set_footer(text='Criado por mystally')
     await ctx.send(embed=sobre)
 class RoleSelect(Select):
