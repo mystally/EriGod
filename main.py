@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ui import Select, View
 import os 
 from dotenv import load_dotenv
+from discord import app_commands
 import random
 
 load_dotenv()
@@ -16,11 +17,13 @@ bot = commands.Bot(command_prefix ="!", intents=intents)
 
 @bot.event
 async def on_ready():
+    await bot.tree.sync()
     print(f'Bot conectado com sucesso como: {bot.user} ')
 
-@bot.command(name='hello')
-async def hello(ctx):
-    await ctx.send('Olá! Mero Mortal estou aqui para guiar seu caminho. Como posso te ajudar?')
+@bot.tree.command()
+async def hello(interact:discord.Interaction):
+    await interact.response.send_message(f'Olá! {interact.user.name} Mero Mortal estou aqui para guiar seu caminho. Como posso te ajudar?')
+   
 @bot.command(name='ping')
 async def ping(ctx):
     latency = round(bot.latency *1000)
