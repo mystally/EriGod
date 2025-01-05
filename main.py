@@ -20,7 +20,7 @@ async def on_ready():
     print(f'Bot conectado com sucesso como: {bot.user} ')
 
 @bot.tree.command()
-async def atualizar_comandos(interaction: discord.Interaction):
+async def sincronize(interaction: discord.Interaction):
     if interaction.user.id == 884502356262264933:  
         await bot.tree.sync()  
         await interaction.response.send_message("Comandos sincronizados com sucesso!")
@@ -32,11 +32,12 @@ async def hello(interact:discord.Interaction):
     await interact.response.send_message(f'Olá! {interact.user.name} Mero Mortal estou aqui para guiar seu caminho. Como posso te ajudar?')
    
 @bot.tree.command(name='ping', description='Verifica a latência do bot')
-async def ping(interaction: discord.Interaction):
+async def ping(interaction:discord.Interaction):
     latency = round(bot.latency * 1000)
     await interaction.response.send_message(f'Pong! Latência {latency}ms')
-@bot.command(name="calc")
-async def calc(ctx, num1: int, operador: str, num2: int):
+@bot.tree.command(name="calc", description="Calcula uma operação matemática.")
+async def calc(interaction: discord.Interaction, num1: int, operador: str, num2: int):
+    # Lógica de cálculo
     if operador == '+':
         resultado = num1 + num2
     elif operador == '-':
@@ -47,13 +48,13 @@ async def calc(ctx, num1: int, operador: str, num2: int):
         if num2 != 0:
             resultado = num1 / num2
         else:
-            await ctx.send("Erro: Divisão por zero!")
+            await interaction.response.send_message("Erro: Divisão por zero!")
             return
     else:
-        await ctx.send("Operador inválido! Use +, -, * ou /.")
+        await interaction.response.send_message("Operador inválido! Use +, -, * ou /.")
         return
 
-    await ctx.send(f"O resultado de {num1} {operador} {num2} é: {resultado}")
+    await interaction.response.send_message(f"O resultado de {num1} {operador} {num2} é: {resultado}")
 @bot.command(name='erigod')
 async def erigod(ctx):
     
