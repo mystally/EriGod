@@ -17,9 +17,12 @@ bot = commands.Bot(command_prefix ="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    await bot.tree.sync()
     print(f'Bot conectado com sucesso como: {bot.user} ')
 
+@bot.tree.command()
+async def sicronizar(ctx:commands.Context):
+   sincs = await bot.tree.sync()
+   await ctx.reply()
 @bot.tree.command()
 async def hello(interact:discord.Interaction):
     await interact.response.send_message(f'Olá! {interact.user.name} Mero Mortal estou aqui para guiar seu caminho. Como posso te ajudar?')
