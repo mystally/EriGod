@@ -20,17 +20,21 @@ async def on_ready():
     print(f'Bot conectado com sucesso como: {bot.user} ')
 
 @bot.tree.command()
-async def sicronizar(ctx:commands.Context):
-   sincs = await bot.tree.sync()
-   await ctx.reply()
+async def atualizar_comandos(interaction: discord.Interaction):
+    if interaction.user.id == 884502356262264933:  
+        await bot.tree.sync()  
+        await interaction.response.send_message("Comandos sincronizados com sucesso!")
+    else: 
+        await interaction.response.send_message("Somente o meu Dono pode usar este comando.")
+    
 @bot.tree.command()
 async def hello(interact:discord.Interaction):
     await interact.response.send_message(f'Olá! {interact.user.name} Mero Mortal estou aqui para guiar seu caminho. Como posso te ajudar?')
    
-@bot.command(name='ping')
-async def ping(ctx):
-    latency = round(bot.latency *1000)
-    await ctx.send(f'Pong! Latência {latency}ms')
+@bot.tree.command(name='ping', description='Verifica a latência do bot')
+async def ping(interaction: discord.Interaction):
+    latency = round(bot.latency * 1000)
+    await interaction.response.send_message(f'Pong! Latência {latency}ms')
 @bot.command(name="calc")
 async def calc(ctx, num1: int, operador: str, num2: int):
     if operador == '+':
