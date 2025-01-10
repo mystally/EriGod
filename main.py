@@ -15,6 +15,11 @@ intents.message_content = True
 intents.members = True
 bot = commands.Bot(command_prefix ="!", intents=intents)
 
+async def carregar_cogs(): 
+    for arquivo in os.listdir('cogs'):
+        if arquivo.endswith(".py"):
+            await bot.load_extension(f"cogs.{arquivo[:-3]}")
+
 @bot.event
 async def on_ready():
     print(f'Bot conectado com sucesso como: {bot.user} ')
@@ -23,10 +28,7 @@ async def on_ready():
 async def hello(interaction:discord.Interaction):
     await interaction.response.send_message(f'Olá! {interaction.user.name} ! Mero Mortal estou aqui para guiar seu caminho. Como posso te ajudar?')
    
-@bot.tree.command(name='ping', description='Verifica a latência do bot')
-async def ping(interaction:discord.Interaction):
-    latency = round(bot.latency * 1000)
-    await interaction.response.send_message(f'Pong! Latência {latency}ms') 
+
 
 @bot.tree.command(name='erigod', description='Responde a saudação do usuário')
 async def erigod(interaction:discord.Interaction):
@@ -90,6 +92,13 @@ async def sincronize(interaction: discord.Interaction):
         await interaction.response.send_message("Comandos sincronizados com sucesso!")
     else: 
         await interaction.response.send_message("Somente o meu Dono pode usar este comando.")
-
+@bot.tree.command(name='shutdown', description='Desliga o bot')
+async def shutdown(interaction: discord.Interaction):
+    # Check if the user has the required permissions
+    if interaction.user.guild_permissions.administrator:
+        await interaction.response.send_message('Desligando o bot...')
+        await bot.close()  # This will shut down the bot
+    else:
+        await interaction.response.send_message('Você não tem permissão para desligar o bot.', ephemeral=True)
 
 bot.run(TOKEN)
