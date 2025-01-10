@@ -24,15 +24,8 @@ async def carregar_cogs():
 async def on_ready():
     print(f'Bot conectado com sucesso como: {bot.user} ')
    
-@bot.tree.command()
-async def hello(interaction:discord.Interaction):
-    await interaction.response.send_message(f'Olá! {interaction.user.name} ! Mero Mortal estou aqui para guiar seu caminho. Como posso te ajudar?')
-   
 
 
-@bot.tree.command(name='erigod', description='Responde a saudação do usuário')
-async def erigod(interaction:discord.Interaction):
-    await interaction.response.send_message(f'Olá, {interaction.user.name}! Como você está?')
 @bot.event 
 async def on_member_join(member):
     guild = member.guild
@@ -44,16 +37,7 @@ async def on_member_join(member):
         )
         bemvindo.set_thumbnail(url=member.avatar.url if member.avatar else bot.user.avatar.url)
         await guild.system_channel.send(embed=bemvindo)
-@bot.tree.command(name='about', description='Informações sobre o bot EriGod')
-async def about(interaction: discord.Interaction):
-    sobre = discord.Embed(
-        title='Sobre o EriGod!',
-        description='Eu sou um bot criado para auxiliar as partidas de RPG de mesa do sistema Mitos e Lendas',
-        color=discord.Color.purple()
-    )
-    sobre.add_field(name='Comandos Disponíveis', value="`/about`, `/ping`, `/classe`", inline=False)
-    sobre.set_footer(text='Criado por mystally')
-    await interaction.response.send_message(embed=sobre)
+
 
 class RoleSelect(Select):
     def __init__(self, roles):
@@ -85,13 +69,7 @@ async def classe(interaction:discord.Interaction):
     
     
     await interaction.response.send_message("Escolha um cargo:", view=view)
-@bot.tree.command()
-async def sincronize(interaction: discord.Interaction):
-    if interaction.user.id == 884502356262264933:  
-        await bot.tree.sync()  
-        await interaction.response.send_message("Comandos sincronizados com sucesso!")
-    else: 
-        await interaction.response.send_message("Somente o meu Dono pode usar este comando.")
+
 @bot.tree.command(name='shutdown', description='Desliga o bot')
 async def shutdown(interaction: discord.Interaction):
     # Check if the user has the required permissions
