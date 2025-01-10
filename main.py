@@ -18,50 +18,19 @@ bot = commands.Bot(command_prefix ="!", intents=intents)
 @bot.event
 async def on_ready():
     print(f'Bot conectado com sucesso como: {bot.user} ')
-
+   
 @bot.tree.command()
-async def sincronize(interaction: discord.Interaction):
-    if interaction.user.id == 884502356262264933:  
-        await bot.tree.sync()  
-        await interaction.response.send_message("Comandos sincronizados com sucesso!")
-    else: 
-        await interaction.response.send_message("Somente o meu Dono pode usar este comando.")
-    
-@bot.tree.command()
-async def hello(interact:discord.Interaction):
-    await interact.response.send_message(f'Olá! {interact.user.name} Mero Mortal estou aqui para guiar seu caminho. Como posso te ajudar?')
+async def hello(interaction:discord.Interaction):
+    await interaction.response.send_message(f'Olá! {interaction.user.name} ! Mero Mortal estou aqui para guiar seu caminho. Como posso te ajudar?')
    
 @bot.tree.command(name='ping', description='Verifica a latência do bot')
 async def ping(interaction:discord.Interaction):
     latency = round(bot.latency * 1000)
-    await interaction.response.send_message(f'Pong! Latência {latency}ms')
-@bot.tree.command(name="calc", description="Calcula uma operação matemática.")
-async def calc(interaction: discord.Interaction, num1: int, operador: str, num2: int):
-    # Lógica de cálculo
-    if operador == '+':
-        resultado = num1 + num2
-    elif operador == '-':
-        resultado = num1 - num2
-    elif operador == '*':
-        resultado = num1 * num2
-    elif operador == '/':
-        if num2 != 0:
-            resultado = num1 / num2
-        else:
-            await interaction.response.send_message("Erro: Divisão por zero!")
-            return
-    else:
-        await interaction.response.send_message("Operador inválido! Use +, -, * ou /.")
-        return
+    await interaction.response.send_message(f'Pong! Latência {latency}ms') 
 
-    await interaction.response.send_message(f"O resultado de {num1} {operador} {num2} é: {resultado}")
-@bot.command(name='erigod')
-async def erigod(ctx):
-    
-    member_name = ctx.author.display_name  
-    response = f'Olá, {member_name}! Como você está?'
-    await ctx.send(response)
-
+@bot.tree.command(name='erigod', description='Responde a saudação do usuário')
+async def erigod(interaction:discord.Interaction):
+    await interaction.response.send_message(f'Olá, {interaction.user.name}! Como você está?')
 @bot.event 
 async def on_member_join(member):
     guild = member.guild
@@ -73,16 +42,17 @@ async def on_member_join(member):
         )
         bemvindo.set_thumbnail(url=member.avatar.url if member.avatar else bot.user.avatar.url)
         await guild.system_channel.send(embed=bemvindo)
-@bot.command(name='about')
-async def about(ctx):
+@bot.tree.command(name='about', description='Informações sobre o bot EriGod')
+async def about(interaction: discord.Interaction):
     sobre = discord.Embed(
-            title = 'Sobre o EriGod!',
-            description = f'Eu sou um bot criado para auxiliar as partidas de RPG de mesa do sistema Mitos e Lendas',
-            color = discord.Color.purple()
-        )
-    sobre.add_field(name='Comandos Disponíveis', value = "`!hello`, `!calc`, `!erigod`, `!about`, `!ping`, `!classe`", inline= False)
+        title='Sobre o EriGod!',
+        description='Eu sou um bot criado para auxiliar as partidas de RPG de mesa do sistema Mitos e Lendas',
+        color=discord.Color.purple()
+    )
+    sobre.add_field(name='Comandos Disponíveis', value="`/about`, `/ping`, `/classe`", inline=False)
     sobre.set_footer(text='Criado por mystally')
-    await ctx.send(embed=sobre)
+    await interaction.response.send_message(embed=sobre)
+
 class RoleSelect(Select):
     def __init__(self, roles):
         options = [discord.SelectOption(label=role.name, value=str(role.id)) for role in roles]
@@ -99,14 +69,27 @@ class RoleSelect(Select):
             await interaction.user.add_roles(role)
             await interaction.response.send_message(f'Você atribuiu o cargo: {role.name}', ephemeral=True)
 
-@bot.command(name='classe')
-async def setrole(ctx):
-    roles = [role for role in ctx.guild.roles if role.name != "@everyone"]  # Exclui o cargo @everyone
+@bot.tree.command(name='classe', description='Escolha um cargo do servidor')
+async def classe(interaction:discord.Interaction):
+    
+    roles = [role for role in interaction.guild.roles if role.name != "@everyone"]
+    
+    
     select = RoleSelect(roles)
+    
+    
     view = View()
     view.add_item(select)
-    await ctx.send("Escolha um cargo:", view=view)
-
+    
+    
+    await interaction.response.send_message("Escolha um cargo:", view=view)
+@bot.tree.command()
+async def sincronize(interaction: discord.Interaction):
+    if interaction.user.id == 884502356262264933:  
+        await bot.tree.sync()  
+        await interaction.response.send_message("Comandos sincronizados com sucesso!")
+    else: 
+        await interaction.response.send_message("Somente o meu Dono pode usar este comando.")
 
 
 bot.run(TOKEN)
