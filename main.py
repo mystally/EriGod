@@ -15,9 +15,11 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 async def carregar_cogs(bot): ## importing the cogs
     caminho_cogs = os.path.join(os.getcwd(), "cogs")
+    print(f"Verificando cogs em: {caminho_cogs}")
     for arquivo in os.listdir(caminho_cogs):
         if arquivo.endswith(".py"):
             try:
+                print(f"Tentando carregar a cog: {arquivo}")
                 await bot.load_extension(f"cogs.{arquivo[:-3]}")
                 print(f"Cog carregada: {arquivo}")
             except Exception as e:
@@ -33,21 +35,6 @@ async def on_ready():
     except Exception as e:
         print(f"Erro ao sincronizar os comandos: {e}")
     print(f'Bot conectado com sucesso como: {bot.user}')
-
-@bot.event
-async def on_member_join(member):
-    guild = member.guild
-    if guild.system_channel:
-        bemvindo = discord.Embed(
-            title='Bem vindo ao servidor!',
-            description=f'Olá {member.mention}, bem vindo ao **{guild.name}**',
-            color=discord.Color.purple()
-        )
-        bemvindo.set_thumbnail(url=member.avatar.url if member.avatar else bot.user.avatar.url)
-        try:
-            await guild.system_channel.send(embed=bemvindo)
-        except Exception as e:
-            print(f"Erro ao enviar mensagem de boas-vindas: {e}")
 
 class RoleSelect(Select):
     def __init__(self, roles):
