@@ -9,9 +9,15 @@ EriGod is a Discord bot created to assist in tabletop RPG sessions using the Mit
   - `/ping`: Returns the bot's latency.
   - `/erigod`: Asks how the user is doing.
   - `/about`: Provides information about the bot and its available commands.
+  - `/shutdown`: turns off the bot, it can only be used by the creator.
+  - `/sincronize`: synchronize new commands
+  
   
 - **Calculations**:
-  - `/calc <num1> <operator> <num2>`: Performs basic mathematical operations (+, -, *, /).
+  - `/somar <n1> <n2>`: Performs the addition operation between two numbers 
+  - `/subtrair <n1> <n2>`: Performs the subtraction operation between two numbers
+  - `/dividir <n1> <n2>`: Performs the division  operation between two numbers 
+  - `/multiplicar <n1> <n2>`: Performs the multiplication operation between two numbers
 
 - **Role Management**:
   - `/classe`: Allows users to choose or remove available roles on the server.

@@ -43,6 +43,6 @@ class Command(commands.Cog):  ## Class name
             await interact.response.send_message("Comandos sincronizados com sucesso!")
         else:
             await interact.response.send_message("Somente o meu Dono pode usar este comando.")
-
+    
 async def setup(bot):
     await bot.add_cog(Command(bot))  
